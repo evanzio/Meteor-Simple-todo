@@ -18,6 +18,7 @@ if (Meteor.isClient) {
     incompleteCount: function () {
       return Tasks.find({checked: {$ne: true}}).count();
     }
+
   });
 
   Template.body.events({
@@ -27,7 +28,9 @@ if (Meteor.isClient) {
 
       Tasks.insert({
         text: text,
-        createdAt: new Date() // current time
+        createdAt: new Date(), // current time
+        owener: Meteor.userId(), //_id of logged in user 
+        username: Meteor.user().username //username of logged in use
       });
 
       // Clear form
@@ -50,4 +53,10 @@ if (Meteor.isClient) {
       Tasks.remove(this._id);
     }
   });
+
+Accounts.ui.config({
+  passwordSignupFields: "USERNAME_ONLY"
+});  
+
+
 }
